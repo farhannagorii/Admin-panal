@@ -4,7 +4,9 @@ import { useForm } from "react-hook-form";
 import $ from "jquery";
 import "dropify/dist/css/dropify.min.css";
 import "dropify/dist/js/dropify.min.js";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { apiBaseUrl } from "../../Config";
 
 export default function SliderDetails() {
   useEffect(() => {
@@ -23,11 +25,6 @@ export default function SliderDetails() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
   // update work
   const [updateIdState,setUpdateIdState]=useState(false)
   let updateId=useParams().id
@@ -40,7 +37,20 @@ export default function SliderDetails() {
     }
   },[updateId])
 
+  let navigate = useNavigate()
+  const [sliderdatas, setsliderdatas] = useState([])
+    const myonsbmit = (e) => {
+      e.preventDefault()
+      let formdata = new FormData(e.target)
+    axios.post(`${apiBaseUrl}/slider/insert`,formdata)
+    .then((res)=>{
+   
+        //  alert("slider data")
+        navigate("/slider/view")
+    })
+  };
  
+
 
   return (
     <section className="w-full">
@@ -70,7 +80,7 @@ export default function SliderDetails() {
           <h3 className="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">
             {updateIdState ? "Update Silder" : "Add Slider"}  
           </h3>
-          <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="border border-t-0 p-3 rounded-b-md border-slate-400">
+          <form onSubmit={myonsbmit} autoComplete="off" className="border border-t-0 p-3 rounded-b-md border-slate-400">
             <div className="flex gap-5">
               <div className="w-1/3">
                 <label
@@ -81,12 +91,13 @@ export default function SliderDetails() {
                 </label>
                 <input
                   type="file"
-                  {...register("Image", { required: "Image is required" })}
+                  // {...register("Image", { required: "Image is required" })}
                   id="Image"
+                  name="sliderImage"
                   className="dropify"
                   data-height="250"
                 />
-                {errors.Image && <p className="text-red-500">{errors.Image.message}</p>}
+                {/* {errors.Image && <p className="text-red-500">{errors.Image.message}</p>} */}
               </div>
               <div className="w-2/3">
                 <div className="mb-5">
@@ -98,12 +109,13 @@ export default function SliderDetails() {
                   </label>
                   <input
                     type="text"
-                    {...register("Title", { required: "Titleis required" })}
+                    // {...register("Title", { required: "Titleis required" })}
                     id="Title"
+                    name="sliderName"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                     placeholder="Title"
                   />
-                  {errors.Title && <p className="text-red-500">{errors.Title.message}</p>}
+                  {/* {errors.Title && <p className="text-red-500">{errors.Title.message}</p>} */}
                 </div>
                 <div className="mb-5">
                   <label
@@ -114,12 +126,13 @@ export default function SliderDetails() {
                   </label>
                   <input
                     type="number"
-                    {...register("order", { required: "Order is required" })}
+                    // {...register("order", { required: "Order is required" })}
                     id="order"
+                    name="sliderOrder"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                     placeholder="Order"
                   />
-                  {errors.order && <p className="text-red-500">{errors.order.message}</p>}
+                  {/* {errors.order && <p className="text-red-500">{errors.order.message}</p>} */}
                 </div>
               </div>
             </div>

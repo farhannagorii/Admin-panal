@@ -1,6 +1,6 @@
 import { FaCommentAlt, FaLocationArrow, FaUser, FaUserEdit } from "react-icons/fa";
 import { FcFaq } from "react-icons/fc";
-
+import React from "react";
 export let navList = [
   
   {

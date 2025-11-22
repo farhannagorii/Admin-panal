@@ -1,38 +1,67 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import {  MdModeEdit, MdModeEditOutline } from 'react-icons/md';
+import { MdModeEdit, MdModeEditOutline } from 'react-icons/md';
+import axios from 'axios';
+import { apiBaseUrl } from '../../Config';
 
 export default function SliderView() {
 
-  
+  // let navigate = useNavigate()
+  const [sliderdatas, setsliderdatas] = useState([])
+  let sliderdata = () => {
+    axios.get(`${apiBaseUrl}/slider/view`)
+      .then((res) =>{
+     setsliderdatas(res.data.sliderdataview)
+    console.log(res.data.sliderdataview)
+      })
+  }
+
+  useEffect(() => {
+    sliderdata()
+    console.log(sliderdatas)
+  }, [])
   return (
     <section className="w-full">
 
-      <nav className="flex border-b-2" aria-label="Breadcrumb">
-        <ol className="p-3 px-6 inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-          <li className="inline-flex items-center ">
-            <Link to={"/home"} className="inline-flex items-center text-md font-medium text-gray-700 hover:text-blue-600">
-              Home
-            </Link>
-          </li>
-          <li>
-            <div className="flex items-center">
-              /
-              <Link to={"/slider/view"} className="ms-1 text-md font-medium text-gray-700 hover:text-blue-600 md:ms-2">Slider</Link>
-            </div>
-          </li>
-          <li aria-current="page">
-            <div className="flex items-center">
-              /
-              <span className="ms-1 text-md font-medium text-gray-500 md:ms-2">View</span>
-            </div>
-          </li>
-        </ol>
-      </nav>
+      <nav className="flex border-b-2 w-full" aria-label="Breadcrumb">
+  <div className="max-w-[900px] mx-auto w-full">
+    <ol className="p-3 px-6 inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+      <li className="inline-flex items-center ">
+        <Link
+          to={"/home"}
+          className="inline-flex items-center text-md font-medium text-gray-700 hover:text-blue-600"
+        >
+          Home
+        </Link>
+      </li>
+
+      <li>
+        <div className="flex items-center">
+          /
+          <Link
+            to={"/slider/view"}
+            className="ms-1 text-md font-medium text-gray-700 hover:text-blue-600 md:ms-2"
+          >
+            Slider
+          </Link>
+        </div>
+      </li>
+
+      <li aria-current="page">
+        <div className="flex items-center">
+          /
+          <span className="ms-1 text-md font-medium text-gray-500 md:ms-2">
+            View
+          </span>
+        </div>
+      </li>
+    </ol>
+  </div>
+</nav>
 
 
       <div className="w-full min-h-[610px]">
-        <div className="max-w-[1220px] mx-auto py-5">
+        <div className="max-w-[920px] mx-auto py-5">
           <div className='flex item-center justify-between bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400'>
             <h3 className="text-[26px] font-semibold" >
               View Slider
@@ -79,75 +108,45 @@ export default function SliderView() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="bg-white  dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td class="w-4 p-4">
-                        <div class="flex items-center">
-                          <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                          <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                        </div>
-                      </td>
-                      <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
 
-                        <div class="py-4">
-                          <div class="text-base font-semibold">Neil Sims</div>
-
-                        </div>
-                      </th>
-                      <td class=" py-4">
-                        <img class="w-10 h-10 rounded-full" src="https://packshifts.in/images/iso.png" alt="Jese image" />
-                      </td>
-                      <td class=" py-4">
-                        1
-                      </td>
-                      <td class=" py-4">
-
-                        <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">Active</button>
-                      </td>
-                      <td class=" py-4">
-
-                        <Link to={`/slider/update/${123}`} >
-                          <div className="rounded-[50%] w-[40px] h-[40px] flex items-center justify-center text-white bg-blue-700  border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <MdModeEdit className='text-[18px]' />
+                    {sliderdatas?.map((item) => {
+                      return (<tr class="bg-white  dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="w-4 p-4">
+                          <div class="flex items-center">
+                            <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                            <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                           </div>
-                        </Link>
-                      </td>
-                    </tr>
+                        </td>
+                        <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
 
-                    <tr class="bg-white  dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td class="w-4 p-4">
-                        <div class="flex items-center">
-                          <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                          <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                        </div>
-                      </td>
-                      <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                          <div class="py-4">
+                            <div class="text-base font-semibold">{item.sliderName}</div>
 
-                        <div class="py-4">
-                          <div class="text-base font-semibold">Neil Sims</div>
-
-                        </div>
-                      </th>
-                      <td class=" py-4">
-                        <img class="w-10 h-10 rounded-full" src="https://packshifts.in/images/iso.png" alt="Jese image" />
-                      </td>
-                      <td class=" py-4">
-                        1
-                      </td>
-                      <td class=" py-4">
-
-
-
-                        <button type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">Deactive</button>
-                      </td>
-                      <td class=" py-4">
-
-                        <Link to={`/slider/update/${123}`} >
-                          <div className="rounded-[50%] w-[40px] h-[40px] flex items-center justify-center text-white bg-blue-700  border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <MdModeEdit className='text-[18px]' />
                           </div>
-                        </Link>
-                      </td>
-                    </tr>
+                        </th>
+                        <td class=" py-4">
+                          <img class="w-10 h-10 rounded-full" src="https://packshifts.in/images/iso.png" alt="Jese image" />
+                        </td>
+                        <td class=" py-4">
+                        {item.sliderOrder}
+                        </td>
+                        <td class=" py-4">
+
+
+
+                          <button type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">Deactive</button>
+                        </td>
+                        <td class=" py-4">
+
+                          <Link to={`/slider/update/${123}`} >
+                            <div className="rounded-[50%] w-[40px] h-[40px] flex items-center justify-center text-white bg-blue-700  border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                              <MdModeEdit className='text-[18px]' />
+                            </div>
+                          </Link>
+                        </td>
+                      </tr>)
+                    })}
+
 
 
 
