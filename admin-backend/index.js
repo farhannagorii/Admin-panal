@@ -8,6 +8,7 @@ import webroutes from "./ROUTES/WEB/webroutes.js"
 let app = express()
 app.use("/uploads/category",express.static("uploads/category"))
 app.use("/uploads/storydetails",express.static("uploads/storydetails"))
+app.use("/uploads/subcategory",express.static("uploads/subcategory"))
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true

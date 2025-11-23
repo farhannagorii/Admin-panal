@@ -28,18 +28,18 @@ export default function ViewCategory() {
 
   useEffect(() => {
     getsubCategory()
-  },[])
+  }, [])
 
-  let getcheckvalues =(e)=>{
-    if(e.target.checked){
+  let getcheckvalues = (e) => {
+    if (e.target.checked) {
       console.log(e.target.value)
-      if(!alldelitem.includes(e.target.value)){
+      if (!alldelitem.includes(e.target.value)) {
         setalldelitems([...alldelitem, e.target.value])
         console.log(alldelitem)
       }
     }
 
-     else {
+    else {
       // delAllids=[1,2,3,4,5]
       let filterData = alldelitem.filter((v) => v != e.target.value) //[1,2,3,5]
       setalldelitems(filterData)
@@ -47,29 +47,45 @@ export default function ViewCategory() {
     }
   }
 
-  let deletedata = async (req, res)=>{
-    if(alldelitem.length===0){
+  let deletedata = async (req, res) => {
+    if (alldelitem.length === 0) {
       alert("select at least one")
       return;
     }
-    let obj = {ids : alldelitem}
+    let obj = { ids: alldelitem }
 
-    axios.post(`${apiBaseUrl}/subcategory/delete`,obj)
-    .then((res)=>{
-      if(res.data.status === 1){
-        setalldelitems([])
-        getsubCategory()
-      }
-      else {
+    axios.post(`${apiBaseUrl}/subcategory/delete`, obj)
+      .then((res) => {
+        if (res.data.status === 1) {
+          setalldelitems([])
+          getsubCategory()
+        }
+        else {
           alert("Deletion failed. Try again.");
         }
-      
-    })
-    
+
+      })
+
   }
-   useEffect(() => {
-      console.log(alldelitem)
-    }, [alldelitem])
+  useEffect(() => {
+    console.log(alldelitem)
+  }, [alldelitem])
+
+
+  let changeStatus = (id, status) => {
+    axios.put(`${apiBaseUrl}/subcategory/update/${id}`, {
+      status: status
+    })
+      .then((res) => {
+        console.log("Updated:", res.data);
+
+        if (res.data.status === 1) {
+          getsubCategory();   // IMPORTANT: refresh UI
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
 
   return (
     <section className="w-full pl-14 ">
@@ -191,9 +207,9 @@ export default function ViewCategory() {
                           <tr class="bg-white  dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="w-4 p-4">
                               <div class="flex items-center"
-                            
+
                               >
-                                <input   onChange={getcheckvalues} value={items._id} id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                <input onChange={getcheckvalues} value={items._id} id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                 <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                               </div>
                             </td>
@@ -208,14 +224,14 @@ export default function ViewCategory() {
                               </div>
                             </th>
                             <td class=" py-4">
-                              <img class="w-10 h-10 rounded-full" alt="Jese image" src={staticpath+items.subcategoryImage}/>
+                              <img class="w-10 h-10 rounded-full" alt="Jese image" src={staticpath + items.subcategoryImage} />
                             </td>
                             <td class=" py-4">
                               {items.subcategoryorder}
                             </td>
                             <td class=" py-4">
 
-                              {items.subcategoryStatus ?
+                              {items.subcategorystatus ?
                                 <button onClick={() => changeStatus(items._id, false)} type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">Active</button>
                                 :
                                 <button onClick={() => changeStatus(items._id, true)} type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">DeActive</button>
@@ -244,7 +260,7 @@ export default function ViewCategory() {
 
                     }
                   </tbody>
-                
+
                 </table>
               </div>
 

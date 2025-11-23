@@ -68,13 +68,3 @@ export let deletematerial = async (req, res) => {
     }
 }
 
-// let materialDelete = async (req, res) => {
-//     let ids = req.body.ids
-//     let deletematerialres = await materialModel.deleteMany({ _id: { $in: ids } })
-
-//     res.send({
-//         status: 1,
-//         msg: "delete material",
-//         deletematerialres
-//     })
-// }

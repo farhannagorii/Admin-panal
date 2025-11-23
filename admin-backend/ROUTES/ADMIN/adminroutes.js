@@ -5,6 +5,7 @@ import categoryroutes from "./categoryRoutes.js"
 import WhyChooseUsroute from "./WhyChooseUsroute.js"
 import testimonialroutes from "./testimonialroute.js"
 import sliderroutes from "./sliderroutes.js"
+import subcategoryroutes from "./subcategoryroutes.js"
 
 
 let adminroutes = express.Router()
@@ -15,5 +16,6 @@ adminroutes.use("/category",categoryroutes)
 adminroutes.use("/story-detail",WhyChooseUsroute)
 adminroutes.use("/testimonial",testimonialroutes)
 adminroutes.use("/slider",sliderroutes)
+adminroutes.use("/subcategory",subcategoryroutes)
 
 export default adminroutes
