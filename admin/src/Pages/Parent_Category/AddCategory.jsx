@@ -53,7 +53,7 @@ export default function AddCategory() {
         axios.put(`${apiBaseUrl}/category/update/${id}`,myData)
         .then((res)=>{
           if(res.data.status){
-             navigate("/category/view") 
+             navigate("category/view") 
            }  
         })
     }
@@ -61,9 +61,9 @@ export default function AddCategory() {
       axios.post(`${apiBaseUrl}/category/insert`,myData)
       .then((res)=>{ 
         if(res.data.status){
-         navigate("/category/view") 
-        alert("data save")
+         navigate("category/view") 
          setImagePre(imagePre)
+         
 
         }
         else if(res.data.error.code==11000){

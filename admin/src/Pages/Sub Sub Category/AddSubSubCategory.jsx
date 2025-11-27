@@ -37,9 +37,9 @@ let navigater = useNavigate()
       })
   }
 
-  useEffect(() => {
-    getsubParentCategory()
-  }, [])
+  // useEffect(() => {
+  //   getsubParentCategory()
+  // }, [])
 
   let insertsubsubParentCategory = (e) => {
     e.preventDefault()
@@ -87,10 +87,10 @@ let navigater = useNavigate()
   }, [updateId])
 
   return (
-    <section className="w-full">
+    <section className="w-[900] ml-14">
       <Breadcrumb path={"Sub Category"} path2={"Add Sub Category"} slash={"/"} />
       <div className="w-full min-h-[610px]">
-        <div className="max-w-[1220px] mx-auto py-5">
+        <div className="max-w-[950px] mx-auto py-5">
           <h3 className="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">
             Add Sub Category
           </h3>
@@ -106,7 +106,7 @@ let navigater = useNavigate()
                 <input
                   type="file"
                   accept="image/*"
-                  {...register("categoryImage", { required: "Category image is required" })}
+                  // {...register("categoryImage", { required: "Category image is required" })}
                   id="categoryImage"
                   name="subsubcategoryimage"
                   className="dropify"
@@ -129,7 +129,7 @@ let navigater = useNavigate()
                   >
                     <option value="">Select Category</option>
                     {parentCategory.length > 0 ? (
-                      parentCategory.map((item) => (
+                      parentCategory?.map((item) => (
                         <option key={item._id} value={item._id}>
                           {item.categoryName}
                         </option>
@@ -148,7 +148,7 @@ let navigater = useNavigate()
                    
                     name="subparentcategory"
                     className="border-2 border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
-                  >
+                  > 
                     <option value="">Select Category</option>
                     {subparentCategory.length > 0 ? (
                       subparentCategory.map((item) => (
@@ -171,7 +171,7 @@ let navigater = useNavigate()
                   </label>
                   <input
                     type="text"
-                    {...register("categoryName", { required: "Category name is required" })}
+                    // {...register("categoryName", { required: "Category name is required" })}
                     id="categoryName"
                     name="subsubcategoryname"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
@@ -189,7 +189,7 @@ let navigater = useNavigate()
                   </label>
                   <input
                     type="number"
-                    {...register("order", { required: "Order is required" })}
+                    // {...register("order", { required: "Order is required" })}
                     id="order"
                     name="subsubcategoryorder"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"

@@ -1,105 +1,84 @@
 import React, { useEffect, useState } from 'react'
 import Breadcrumb from '../../common/Breadcrumb'
 import { Link } from 'react-router-dom';
-import { MdFilterAltOff, MdModeEdit, MdModeEditOutline } from 'react-icons/md';
-import { CiEdit } from 'react-icons/ci';
+import { MdFilterAltOff, MdModeEdit } from 'react-icons/md';
 import { FaFilter } from 'react-icons/fa';
 import axios from 'axios';
 import { apiBaseUrl } from '../../Config';
-// import { MdModeEditOutline } from "react-icons/md";
 
 export default function ViewCategory() {
-  // let [orderModal, setOrderModal] = useState(false);
 
   let [activeFilter, setactiveFilter] = useState(true);
-  let [activeDropDown, setactiveDropDown] = useState(false);
-  let [categorylist, setCategoryList] = useState([])
-  let [staticpath, setStaticpath] = useState([])
-  let [alldelitem, setalldelitems] = useState([])
+  let [categorylist, setCategoryList] = useState([]);
+  let [staticpath, setStaticpath] = useState("");
+  let [alldelitem, setalldelitems] = useState([]);
 
   let getsubCategory = () => {
     axios.get(`${apiBaseUrl}/subcategory/view`)
-      .then((res) => res.data)
-      .then((finalres) => {
-        setCategoryList(finalres.subcatdata) //[3 Items]
-        //setStaticpath(finalres.staticPath) //http://localhost:8120/uploads/category/
+      .then(res => res.data)
+      .then(finalres => {
+        setCategoryList(finalres.subcatdata);
+        setStaticpath(finalres.staticPath);
       })
-  }
+  };
 
   useEffect(() => {
-    getsubCategory()
-  }, [])
+    getsubCategory();
+  }, []);
 
   let getcheckvalues = (e) => {
     if (e.target.checked) {
-      console.log(e.target.value)
       if (!alldelitem.includes(e.target.value)) {
-        setalldelitems([...alldelitem, e.target.value])
-        console.log(alldelitem)
+        setalldelitems([...alldelitem, e.target.value]);
       }
+    } else {
+      let filterData = alldelitem.filter((v) => v !== e.target.value);
+      setalldelitems(filterData);
     }
+  };
 
-    else {
-      // delAllids=[1,2,3,4,5]
-      let filterData = alldelitem.filter((v) => v != e.target.value) //[1,2,3,5]
-      setalldelitems(filterData)
-      console.log(alldelitem)
-    }
-  }
-
-  let deletedata = async (req, res) => {
+  let deletedata = async () => {
     if (alldelitem.length === 0) {
-      alert("select at least one")
+      alert("Select at least one");
       return;
     }
-    let obj = { ids: alldelitem }
+
+    let obj = { ids: alldelitem };
 
     axios.post(`${apiBaseUrl}/subcategory/delete`, obj)
       .then((res) => {
         if (res.data.status === 1) {
-          setalldelitems([])
-          getsubCategory()
-        }
-        else {
+          setalldelitems([]);
+          getsubCategory();
+        } else {
           alert("Deletion failed. Try again.");
         }
-
-      })
-
-  }
-  useEffect(() => {
-    console.log(alldelitem)
-  }, [alldelitem])
-
+      });
+  };
 
   let changeStatus = (id, status) => {
     axios.put(`${apiBaseUrl}/subcategory/update/${id}`, {
       status: status
     })
       .then((res) => {
-        console.log("Updated:", res.data);
-
         if (res.data.status === 1) {
-          getsubCategory();   // IMPORTANT: refresh UI
+          getsubCategory();
         }
       })
       .catch(err => console.log(err));
-  }
-
+  };
 
   return (
-    <section className="w-full pl-14 ">
-
+    <section className="w-full pl-14">
       <Breadcrumb path={"Sub Category"} link={'/category/sub-category/view'} path2={"View"} slash={"/"} />
 
+      {/* Filter Box */}
       <div className={`rounded-lg border border-gray-300 px-5 py-5 max-w-[1220px] mx-auto mt-10 ${activeFilter ? "hidden" : "block"}`}>
-
-        <form className="grid grid-cols-[40%_35%_5%] gap-[1%] items-center ">
-          <div className="">
-
+        <form className="grid grid-cols-[40%_35%_5%] gap-[1%] items-center">
+          <div>
             <select
               name="parentCatSelectBox"
-              className="border  border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-3"
+              className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3"
             >
               <option value="">Select Parent Category</option>
               <option value="Mens">Men's</option>
@@ -107,171 +86,153 @@ export default function ViewCategory() {
               <option value="Sale">Sale</option>
             </select>
           </div>
-          <div className="">
+
+          <div>
             <input
               type="text"
-              id="simple-search"
-              className="border  border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-3"
-              placeholder="Search  name..."
-              required
+              className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-3"
+              placeholder="Search name..."
             />
           </div>
-          <div className=''>
+
+          <div>
             <button
               type="submit"
-              className="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="p-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800"
             >
-              <svg
-                className="w-4 h-4"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeWidth="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
               </svg>
-              <span className="sr-only">Search</span>
             </button>
           </div>
-
-
-
         </form>
-
-
       </div>
+
+      {/* Table Section */}
       <div className="w-full min-h-[610px]">
-        <div className="max-w-[1220px] mx-auto py-5">
-          <div className='flex item-center justify-between bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400'>
-            <h3 className="text-[26px] font-semibold" >
-              View Sub Category
-            </h3>
-            <div className='flex justify-between '>
-              <div onClick={() => setactiveFilter(!activeFilter)} className="cursor-pointer text-[white] mx-3 rounded-[50%] w-[40px] h-[40px]  mx-3 rounded-[50%] w-[40px] h-[40px] flex items-center justify-center  text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                {activeFilter ? <FaFilter className='text-[18px]' /> : <MdFilterAltOff className='text-[18px]' />}
+        <div className="max-w-[980px] mx-auto py-5">
+          <div className="flex justify-between bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">
+            <h3 className="text-[26px] font-semibold">View Sub Category</h3>
+
+            <div className="flex">
+
+              <div
+                onClick={() => setactiveFilter(!activeFilter)}
+                className="cursor-pointer mx-3 rounded-full w-[40px] h-[40px] flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800"
+              >
+                {activeFilter ? <FaFilter /> : <MdFilterAltOff />}
               </div>
 
-              <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"> Change Status</button>
-              <button type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" onClick={deletedata}>Delete </button>
+              <button
+                type="button"
+                className="text-white bg-green-700 hover:bg-green-800 px-5 py-2.5 rounded-lg text-sm mr-2"
+              >
+                Change Status
+              </button>
+
+              <button
+                type="button"
+                className="text-white bg-red-700 hover:bg-red-800 px-5 py-2.5 rounded-lg text-sm"
+                onClick={deletedata}
+              >
+                Delete
+              </button>
             </div>
           </div>
+
           <div className="border border-t-0 rounded-b-md border-slate-400">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
 
-            {/* border-2 border-[red] */}
-            <div className="relative overflow-x-auto">
+              {/* TABLE FIXED WIDTH ENABLED */}
+              <table className="w-full table-fixed text-sm text-left text-gray-500">
 
+                <thead className="text-xs text-gray-700 uppercase bg-gray-2000">
+                  <tr>
+                    <th className="w-[4%] p-4">Select</th>
+                    <th className="w-[20%] px-6 py-3">Parent Category</th>
+                    <th className="w-[20%] px-3 py-3">Sub Category</th>
+                    <th className="w-[12%] py-3">Image</th>
+                    <th className="w-[10%] py-3">Order</th>
+                    <th className="w-[10%] py-3">Status</th>
+                    <th className="w-[8%] py-3">Action</th>
+                  </tr>
+                </thead>
 
-              <div class="relative overflow-x-auto  shadow-md sm:rounded-lg">
+                <tbody>
+                  {categorylist.length > 0 ? (
+                    categorylist.map((items, index) => (
+                      <tr className="bg-gray border-b hover:bg-gray-200" key={index}>
 
-                <table class="w-full ml-5 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <td className="w-[4%] p-4">
+                          <input
+                            onChange={getcheckvalues}
+                            value={items._id}
+                            type="checkbox"
+                            className="w-4 h-4 text-blue-600"
+                          />
+                        </td>
 
-                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                      <th scope="col" class="p-4">
-                        <div class="flex items-center">
-                          <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                          <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                        </div>
-                      </th>
-                      <th scope="col" class="px-6 py-3">
-                        Parent Category Name
-                      </th>
-                      <th scope="col" class="px-0 py-3">
-                        Sub Category Name
-                      </th>
+                        <td className="w-[20%] px-6 py-4">
+                          {items.parentcatgoryname}
+                        </td>
 
-                      <th scope="col" class=" w-[12%] ">
-                        Image
-                      </th>
-                      <th scope="col" class=" w-[10%] ">
-                        Order
-                      </th>
-                      <th scope="col" class="w-[10%]  ">
-                        Status
-                      </th>
-                      <th scope="col" class="w-[6%]">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {categorylist.length >= 1 ?
-                      categorylist.map((items, index) => {
-                        return (
-                          <tr class="bg-white  dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td class="w-4 p-4">
-                              <div class="flex items-center"
+                        <td className="w-[20%] py-4">
+                          {items.subcategoryname}
+                        </td>
 
-                              >
-                                <input onChange={getcheckvalues} value={items._id} id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                              </div>
-                            </td>
-                            <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                        <td className="w-[12%] py-4">
+                          <img
+                            className="w-10 h-10 rounded-full"
+                            src={staticpath + items.subcategoryImage}
+                            alt=""
+                          />
+                        </td>
 
-                              <div class="py-4">
-                                <div class="text-base font-semibold">
-                                  {items.parentcatgoryname}
-                                  {items.subcategoryname}
-                                </div>
+                        <td className="w-[10%] py-4">
+                          {items.order}
+                        </td>
 
-                              </div>
-                            </th>
-                            <td class=" py-4">
-                              <img class="w-10 h-10 rounded-full" alt="Jese image" src={staticpath + items.subcategoryImage} />
-                            </td>
-                            <td class=" py-4">
-                              {items.subcategoryorder}
-                            </td>
-                            <td class=" py-4">
+                        <td className="w-[10%] py-4">
+                          {items.subcategorystatus ? (
+                            <button
+                              onClick={() => changeStatus(items._id, false)}
+                              className="text-white bg-green-500 px-4 py-1 rounded-lg"
+                            >
+                              Active
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => changeStatus(items._id, true)}
+                              className="text-white bg-red-500 px-4 py-1 rounded-lg"
+                            >
+                              DeActive
+                            </button>
+                          )}
+                        </td>
 
-                              {items.subcategorystatus ?
-                                <button onClick={() => changeStatus(items._id, false)} type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">Active</button>
-                                :
-                                <button onClick={() => changeStatus(items._id, true)} type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">DeActive</button>
-                              }
-                            </td>
-                            <td class=" py-4">
-
-                              <Link to={`/category/update/${items._id}`} >
-                                <div className="rounded-[50%] w-[40px] h-[40px] flex items-center justify-center text-white bg-blue-700  border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                  <MdModeEdit className='text-[18px]' />
-                                </div>
-                              </Link>
-                            </td>
-
-                          </tr>
-                        )
-                      })
-
-                      :
-                      <tr class="bg-white  dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="w-4 p-4" colSpan={6}>
-                          No Data Found
+                        <td className="w-[8%] py-4">
+                          <Link to={`/category/update/${items._id}`}>
+                            <div className="rounded-full w-[40px] h-[40px] flex items-center justify-center bg-blue-700 text-white hover:bg-blue-800">
+                              <MdModeEdit />
+                            </div>
+                          </Link>
                         </td>
                       </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="7" className="text-center py-6">No Data Found</td>
+                    </tr>
+                  )}
+                </tbody>
 
-
-                    }
-                  </tbody>
-
-                </table>
-              </div>
-
+              </table>
 
             </div>
-
           </div>
         </div>
       </div>
-
-
 
     </section>
   )
