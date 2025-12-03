@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiBaseUrl } from "../../Config";
+import { loginContext } from "../Maincontext";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function Login() {
 
   //   navigate("/dashboard");
   // };
-
+let {user,setuser}= useContext(loginContext)
   let onSubmit=(e)=>{
       e.preventDefault()
       let userName=e.target.userName.value;
@@ -41,8 +42,25 @@ export default function Login() {
         password
       }
       console.log(obj)
+      axios.post(`${apiBaseUrl}/auth/login`,obj)
+      .then((res)=>res.data)
+      .then((finalres)=>{
+        console.log(finalres)
+        if(finalres.status==1){
+          setuser(finalres.user)
+          navigate("/dashboard")
+        }
+        else{
+          alert("invalid user")
+        }
+      })
   }
-
+   
+   useEffect(()=>{
+       if(user){
+        navigate("/dashboard")
+       }
+   },[user])
   return (
     <section className="bg-gray-50">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

@@ -28,7 +28,7 @@ import SliderView from "./Pages/Slider/SliderView.jsx";
 import RootLayout from "./layout/RootLayout.jsx";
 import AddSubSubCategory from "./Pages/Sub Sub Category/AddSubSubCategory.jsx";
 import ViewSubSubCategory from "./Pages/Sub Sub Category/ViewSubSubCategory.jsx";
-import Addmeterials from "./Pages/Meterials/Addmeterials.jsx"; 
+import Addmeterials from "./Pages/Meterials/Addmeterials.jsx";
 import ViewMeterials from "./Pages/Meterials/ViewMeterials.jsx";
 import Company_profile from "./Pages/Company-profile.jsx";
 import TestimonialAdd from "./Pages/Testimonial/TestimonialAdd.jsx";
@@ -40,6 +40,7 @@ import ViewFaq from "./Pages/Faq/ViewFaq.jsx";
 import Users from "./Pages/Users.jsx";
 import Newsletters from "./Pages/NewsLetters.jsx";
 import Enquiry from "./Pages/Enquirys.jsx";
+import Maincontext from "./Pages/Maincontext.jsx";
 
 
 
@@ -61,7 +62,7 @@ const route = createBrowserRouter(
           <Route path="view" element={<ViewColor />}></Route>
         </Route>
 
-        
+
         <Route path="material">
           <Route path="add" element={<Addmeterials />}></Route>
           <Route path="update/:id?" element={<Addmeterials />}></Route>
@@ -141,6 +142,9 @@ const route = createBrowserRouter(
 );
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={route}></RouterProvider>
+    <Maincontext>
+      <RouterProvider router={route}></RouterProvider>
+    </Maincontext>
   </StrictMode>
+
 );

@@ -8,8 +8,8 @@ export default function Dashboard() {
   return (
     <>
     <Breadcrumb path={"Dashboard"}/>
-          <div className="w-full min-h-[610px]">
-            <div className="max-w-[1220px] mx-auto py-5">
+          <div className="w-full ml-4 min-h-[610px]">
+            <div className="max-w-[920px] mx-auto py-5">
               <div className="grid grid-cols-3 gap-5">
                 <DashboardItems
                   h3={"26K"}
