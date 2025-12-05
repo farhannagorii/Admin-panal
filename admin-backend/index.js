@@ -23,7 +23,7 @@ app.use("/admin",adminroutes)
 app.use("/web",webroutes)
 
 app.listen(PORT,async()=>{
-    dbconnect()
+    dbconnect() 
      console.log("server is running on 3000")
 
  let checkadmindata = await loginModel.find()

@@ -8,6 +8,7 @@ import sliderroutes from "./sliderroutes.js"
 import subcategoryroutes from "./subcategoryroutes.js"
 import subSubcategoryroutes from "./subSubcategoryRoutes.js"
 import loginRoutes from "./loginRoute.js"
+import productsroutes from "./productroutes.js"
 
 
 let adminroutes = express.Router()
@@ -21,5 +22,6 @@ adminroutes.use("/slider",sliderroutes)
 adminroutes.use("/subcategory",subcategoryroutes)
 adminroutes.use("/subsubcategory",subSubcategoryroutes)
 adminroutes.use("/auth",loginRoutes) 
+adminroutes.use("/products",productsroutes) 
 
 export default adminroutes

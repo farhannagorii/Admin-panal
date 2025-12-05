@@ -88,3 +88,16 @@ export let updatedata = async(req ,res)=>{
 
     
 }
+
+
+export let categorydelete= async(req ,res)=>{
+    let {ids}=req.body
+    console.log(ids)
+    let delteids = await categoryModel.deleteMany({ _id: { $in: ids } })
+
+    res.send({
+        status:1,
+        message:"category data delted",
+        delteids
+    })
+}

@@ -1,5 +1,5 @@
 import express from "express"
-import { categoryinsert, categorystatus, categoryview, editdata, updatedata } from "../../CONTROLLERS/ADMIN/categoryController.js"
+import { categorydelete, categoryinsert, categorystatus, categoryview, editdata, updatedata } from "../../CONTROLLERS/ADMIN/categoryController.js"
 import multer from "multer"
 import path  from "path"
 let categoryroutes = express.Router()
@@ -23,6 +23,7 @@ categoryroutes.get("/view",categoryview)
 categoryroutes.put("/change-status/:id",categorystatus)
 categoryroutes.get("/edit-row-data/:id",editdata)
 categoryroutes.put("/update/:id",upload.single('categoryImage'),updatedata)
+categoryroutes.post("/delete",categorydelete)
 
 
 
