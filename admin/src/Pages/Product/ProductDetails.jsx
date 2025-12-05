@@ -35,7 +35,8 @@ export default function ProductDetails() {
       .then((res) => res.data)
       .then((final) => {
         setsubparentcategorydata(final.categoryLists)
-        // console.log(final.categoryLists)
+        console.log(final.categoryLists)
+        // alert("yes")
       })
   }
 
@@ -44,8 +45,7 @@ export default function ProductDetails() {
       .then((res) => res.data)
       .then((final) => {
         setsubsubparentcategorydata(final.subsubcategoryLists)
-        // console.log(final.subsubcategoryLists)
-        // alert("yes")
+        console.log(final.subsubcategoryLists)
       })
   }
   let getmaterialdata = () => {
@@ -67,11 +67,12 @@ export default function ProductDetails() {
       })
   }
   let insert = (e) => {
-      e.preventDefault()
-    axios.post(`${apiBaseUrl}/products/insert`)
+    e.preventDefault()
+    let formdata = new FormData(e.target)
+    axios.post(`${apiBaseUrl}/products/insert`,formdata)
       .then((res) => res.data)
       .then((final) => {
-       
+
         console.log(final.data)
         // alert("yes")
       })
@@ -521,7 +522,7 @@ export default function ProductDetails() {
             >
               Description
             </label>
-            <ReactQuill theme="snow" value={value} onChange={setValue} className='h-[200px]' 
+            <ReactQuill theme="snow" value={value} onChange={setValue} className='h-[200px]'
             // {...register("description", { required: "Description is required" })} 
             />
 

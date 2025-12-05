@@ -173,8 +173,8 @@ export default function ViewCategory() {
                           />
                         </td>
 
-                        <td className="w-[20%] px-6 py-4">
-                          {items.parentcatgoryname}
+                        <td className="w-[20%] px-6 py-4 text-black">
+                          {items.parentcategory.categoryName}
                         </td>
 
                         <td className="w-[20%] py-4">

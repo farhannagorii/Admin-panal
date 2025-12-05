@@ -12,7 +12,7 @@ import e from "cors";
 export default function AddSubCategory() {
 
   let [parentCategory, setParentCategory] = useState([])
-const [selectedParent, setSelectedParent] = useState("");
+  const [selectedParent, setSelectedParent] = useState("");
   let navigate = useNavigate()
 
   let getParentCategory = () => {
